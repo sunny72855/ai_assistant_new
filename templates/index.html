@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DPKS AI</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='dpks-icon.png') }}">
+    <link rel="stylesheet" href="/static/style.css" />
+    <!-- Markdown + DOMPurify -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@2.4.0/dist/purify.min.js"></script>
+  </head>
+
+  <body>
+    <div class="page">
+
+      <!-- 🏠 HOME SCREEN -->
+      <section id="home" class="home-screen">
+        <div class="home-content">
+          <h1>Welcome to DPKS AI</h1>
+          <p>Your creative AI assistant for stories, music, and art.</p>
+          <button id="startChatBtn" class="primary-btn">Start Chat 💬</button>
+        </div>
+      </section>
+
+      <!-- 💬 CHAT SCREEN -->
+      <section id="chat-screen" class="hidden">
+        <header class="topbar">
+          <h1>DPKS AI</h1>
+          <div class="controls">
+            <button id="homeBtn" title="Go Home">🏠</button>
+            <button id="patchBtn" title="Show Patch Notes">📝 Patch Notes</button>
+            <button id="clearBtn" title="Clear Conversation">🧹 Clear</button>
+            <button id="themeToggle" title="Toggle Dark Mode">🌗</button>
+          </div>
+        </header>
+
+        <main class="container">
+          <section id="chat" class="chat">
+            {% for m in messages %}
+              {% if m.role == 'user' %}
+                <div class="bubble user">{{ m.text }}</div>
+              {% elif m.role == 'assistant' %}
+                <div class="bubble assistant markdown" data-text="{{ m.text|e }}"></div>
+              {% endif %}
+            {% endfor %}
+            <div id="bottom-anchor"></div>
+          </section>
+
+          <form id="promptForm" class="composer" autocomplete="off">
+            <div class="row">
+              <label>Creative type</label>
+              <select id="category">
+                <option value="story">Viết truyện / Story</option>
+                <option value="music">Sáng tác nhạc / Music</option>
+              </select>
+            </div>
+
+            <div class="row two">
+              <div>
+                <label>Style</label>
+                <select id="style">
+                  <option value="normal">Normal</option>
+                  <option value="funny">Funny</option>
+                  <option value="dark">Dark</option>
+                  <option value="poetic">Poetic</option>
+                  <option value="epic">Epic</option>
+                </select>
+              </div>
+              <div>
+                <label>Language</label>
+                <select id="language">
+                  <option value="vi">Tiếng Việt</option>
+                  <option value="en">English</option>
+                  <option value="ja">日本語</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row">
+              <label>Prompt</label>
+              <div class="default-prompts" id="defaultPrompts"></div>
+              <textarea id="prompt" placeholder="Nhập ý tưởng của bạn..." required></textarea>
+            </div>
+
+            <div class="row actions">
+              <button type="submit" id="sendBtn">✨ Generate</button>
+              <button type="button" id="stopBtn" disabled>⏹ Stop</button>
+            </div>
+          </form>
+        </main>
+      </section>
+    </div>
+
+    <!-- 📝 PATCH NOTES MODAL -->
+    <div id="patchModal" class="modal hidden">
+      <div class="modal-content">
+        <span class="close-btn" id="closePatch">&times;</span>
+        <h2>📝 Patch Notes — v2.6 (October 2025)</h2>
+        <div class="patch-body">
+          <h3>New Features & Improvements:</h3>
+          <ul>
+            <li>⏹ Stop AI mid-generation — now you can interrupt while the AI is typing!</li>
+            <li>🖋️ Consistent typing behavior — smoother, glitch-free AI messages.</li>
+            <li>🎛️ UI controls improved — stop button stays active while generating.</li>
+            <li>🧹 Chat clearing optimized — clears instantly and reliably.</li>
+            <li>🌗 Dark/Light mode memory — theme preference auto-saves.</li>
+            <li>🎲 Random default prompts — 3 prompts per session to spark creativity.</li>
+            <li>🚀 Performance & stability — faster UI load, smoother scrolling, improved Markdown rendering.</li>
+            <li>🛡️ Markdown sanitized — safe AI response rendering with DOMPurify.</li>
+          </ul>
+          <h3>Bug Fixes:</h3>
+          <ul>
+            <li>Fixed cases where stop button was disabled prematurely.</li>
+            <li>Prevented accidental overlapping of typing and AI messages.</li>
+            <li>Corrected minor layout issues in prompt selection and action buttons.</li>
+          </ul>
+          <p><em>Tip: Try stopping the AI mid-generation to experiment with partial outputs — great for brainstorming!</em></p>
+        </div>
+      </div>
+    </div>
+
+    <script src="/static/script.js"></script>
+  </body>
+</html>

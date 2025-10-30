@@ -1,0 +1,464 @@
+/* =========================================================
+   Base Variables
+   ========================================================= */
+:root {
+  --bg: #f2f5f8;
+  --card: #ffffff;
+  --muted: #7b8b9a;
+  --primary: #3498db;
+  --accent: #2ecc71;
+  --user: #d1e9ff;
+  --assistant: #eef8ff;
+  --text: #0b2b3a;
+  --border: rgba(0, 0, 0, 0.06);
+  --shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  --radius: 12px;
+}
+
+/* =========================================================
+   Dark Mode
+   ========================================================= */
+body.dark {
+  --bg: #0b111b;
+  --card: #0f1720;
+  --muted: #94a3b8;
+  --primary: #4aa3ff;
+  --user: #1e3850;
+  --assistant: #0f2535;
+  --text: #e2e8f0;
+  --border: rgba(255, 255, 255, 0.1);
+  --shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* =========================================================
+   Reset & Layout
+   ========================================================= */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", Arial, sans-serif;
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  transition: background 0.4s, color 0.4s;
+  min-height: 100vh;
+}
+
+/* =========================================================
+   Top Bar
+   ========================================================= */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 24px;
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: 20px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.topbar .controls button {
+  margin-left: 8px;
+  background: transparent;
+  border: 1px solid var(--border);
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--muted);
+  transition: all 0.2s ease;
+}
+
+.topbar .controls button:hover {
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+/* =========================================================
+   Chat Container
+   ========================================================= */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 18px;
+}
+
+/* =========================================================
+   Chat Area
+   ========================================================= */
+.chat {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 16px;
+  min-height: 320px;
+  max-height: 500px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: var(--shadow);
+}
+
+/* =========================================================
+   Message Bubbles
+   ========================================================= */
+.bubble {
+  max-width: 85%;
+  padding: 12px 14px;
+  border-radius: var(--radius);
+  line-height: 1.5;
+  white-space: pre-wrap;
+  box-shadow: var(--shadow);
+  opacity: 0;
+  transform: translateY(8px);
+  animation: fadeIn 0.3s ease forwards;
+}
+
+.bubble.user {
+  align-self: flex-end;
+  background: var(--user);
+  border-bottom-right-radius: 6px;
+}
+
+.bubble.assistant {
+  align-self: flex-start;
+  background: var(--assistant);
+  border-bottom-left-radius: 6px;
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================================
+   Typing Dots
+   ========================================================= */
+.bubble.assistant.typing {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  background: var(--muted);
+  border-radius: 50%;
+  animation: blink 1.4s infinite;
+}
+
+.dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes blink {
+
+  0%,
+  80%,
+  100% {
+    opacity: 0.3;
+    transform: translateY(0);
+  }
+
+  40% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+}
+
+/* =========================================================
+   Composer
+   ========================================================= */
+.composer {
+  margin-top: 14px;
+}
+
+.row {
+  margin-bottom: 10px;
+}
+
+.row label {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 6px;
+  display: block;
+}
+
+select,
+textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  resize: vertical;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+select:focus,
+textarea:focus {
+  border-color: var(--primary);
+  outline: none;
+}
+
+.row.two {
+  display: flex;
+  gap: 12px;
+}
+
+.row.two>div {
+  flex: 1;
+}
+
+/* =========================================================
+   Buttons
+   ========================================================= */
+.actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+button {
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  border: none;
+  padding: 10px 14px;
+  transition: all 0.2s ease;
+}
+
+/* Generate Button */
+#sendBtn {
+  background: var(--primary);
+  color: #fff;
+}
+
+#sendBtn:hover {
+  opacity: 0.9;
+}
+
+#sendBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Stop Button */
+#stopBtn {
+  background: #e74c3c;
+  color: #fff;
+}
+
+#stopBtn:hover {
+  background: #c0392b;
+}
+
+#stopBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* =========================================================
+   Home Screen
+   ========================================================= */
+.home-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  height: 100vh;
+  background: var(--bg);
+}
+
+.home-content h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5em;
+}
+
+.home-content p {
+  color: var(--muted);
+  margin-bottom: 1.5em;
+}
+
+.primary-btn {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.25s;
+}
+
+.primary-btn:hover {
+  opacity: 0.9;
+}
+
+/* =========================================================
+   Utilities
+   ========================================================= */
+.hidden {
+  display: none !important;
+}
+
+/* Scrollbar */
+.chat::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chat::-webkit-scrollbar-thumb {
+  background: var(--muted);
+  border-radius: 6px;
+}
+
+.chat::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+/* =========================================================
+   Default Prompt Buttons
+   ========================================================= */
+.default-prompts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.prompt-btn {
+  background: var(--assistant);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.prompt-btn:hover {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+
+
+/* Responsive */
+@media (max-width: 600px) {
+  .container {
+    padding: 12px;
+  }
+
+  .chat {
+    min-height: 260px;
+  }
+
+  .topbar {
+    padding: 12px;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  button {
+    width: 100%;
+  }
+}
+
+/* =========================================================
+   Patch Notes Modal
+   ========================================================= */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  backdrop-filter: blur(4px);
+  transition: opacity 0.3s ease;
+}
+
+.modal.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.modal-content {
+  background: var(--card);
+  color: var(--text);
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  max-width: 480px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  color: var(--primary);
+  text-align: center;
+}
+
+.patch-body {
+  margin-top: 12px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.patch-body ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.patch-body li {
+  margin: 8px 0;
+  padding-left: 1.4em;
+  position: relative;
+}
+
+.patch-body li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+}
+
+.close-btn {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  font-size: 22px;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.close-btn:hover {
+  color: var(--primary);
+}
